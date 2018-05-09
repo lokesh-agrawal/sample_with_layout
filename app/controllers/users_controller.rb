@@ -43,7 +43,8 @@ class UsersController < ApplicationController
   end
   
   def index
-    @users = User.paginate(page: params[:page])
+    @users = User.where(isActive: true).paginate(page: params[:page])
+    
   end
 
   def admin_user
@@ -61,7 +62,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    User.find(params[:id]).destroy
+    User.find(params[:id]).update_attribute(:isActive, false)
     flash[:success] = "User destroyed."
     redirect_to users_url
   end
