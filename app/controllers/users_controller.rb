@@ -63,6 +63,7 @@ class UsersController < ApplicationController
 
   def destroy
     User.find(params[:id]).update_attribute(:isActive, false)
+    DeleteUserWorker.perform_in(1.minutes,User.find(params[:id]).id)
     flash[:success] = "User destroyed."
     redirect_to users_url
   end
